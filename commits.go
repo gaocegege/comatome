@@ -98,6 +98,6 @@ func ShowCommitsPerRepo(m CommitsPerRepo) {
 
 	fmt.Printf("Created %d commits in %d repositories\n", total, len(m))
 	for _, v := range keys {
-		fmt.Printf("%d\t%s\n", m[v], v)
+		fmt.Printf("|%d\t|%s|\n", m[v], v)
 	}
 }

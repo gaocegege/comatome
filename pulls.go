@@ -58,9 +58,13 @@ func ShowOpenedPullRequests(pulls map[string]int) {
 	for _, v := range keys {
 		total += pulls[v]
 	}
-	fmt.Printf("Opened %d pull requests in %d repositories\n", total, len(pulls))
+	fmt.Printf("Opened %d pull requests in %d repositories\n\n", total, len(pulls))
+	fmt.Println(`| Count 	| Repository 	|
+|-------	|------------	|`)
 	for _, v := range keys {
-		fmt.Printf("%d\t%s\n", pulls[v], v)
+		url := fmt.Sprintf("https://github.com/%s", v)
+		url += "/pulls?q=is%3Apr+author%3Agaocegege+"
+		fmt.Printf("|%d\t|[%s](%s)|\n", pulls[v], v, url)
 	}
 }
 
@@ -116,8 +120,12 @@ func ShowReviewedPullRequests(pulls map[string]int) {
 	for _, v := range keys {
 		total += pulls[v]
 	}
-	fmt.Printf("Reviewed %d pull requests in %d repositories\n", total, len(pulls))
+	fmt.Printf("Reviewed %d pull requests in %d repositories\n\n", total, len(pulls))
+	fmt.Println(`| Count 	| Repository 	|
+|-------	|------------	|`)
 	for _, v := range keys {
-		fmt.Printf("%d\t%s\n", pulls[v], v)
+		url := fmt.Sprintf("https://github.com/%s", v)
+		url += "/pulls?q=is%3Apr+reviewed-by%3Agaocegege+"
+		fmt.Printf("|%d\t|[%s](%s)|\n", pulls[v], v, url)
 	}
 }
