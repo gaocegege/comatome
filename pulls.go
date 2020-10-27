@@ -58,13 +58,27 @@ func ShowOpenedPullRequests(pulls map[string]int) {
 	for _, v := range keys {
 		total += pulls[v]
 	}
+
+	type kv struct {
+		Key   string
+		Value int
+	}
+
+	var ss []kv
+	for k, v := range pulls {
+		ss = append(ss, kv{k, v})
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].Value > ss[j].Value
+	})
 	fmt.Printf("Opened %d pull requests in %d repositories\n\n", total, len(pulls))
 	fmt.Println(`| Count 	| Repository 	|
 |-------	|------------	|`)
-	for _, v := range keys {
-		url := fmt.Sprintf("https://github.com/%s", v)
+	for _, s := range ss {
+		url := fmt.Sprintf("https://github.com/%s", s.Key)
 		url += "/pulls?q=is%3Apr+author%3Agaocegege+"
-		fmt.Printf("|%d\t|[%s](%s)|\n", pulls[v], v, url)
+		fmt.Printf("|%d\t|[%s](%s)|\n", s.Value, s.Key, url)
 	}
 }
 
@@ -120,12 +134,25 @@ func ShowReviewedPullRequests(pulls map[string]int) {
 	for _, v := range keys {
 		total += pulls[v]
 	}
+	type kv struct {
+		Key   string
+		Value int
+	}
+
+	var ss []kv
+	for k, v := range pulls {
+		ss = append(ss, kv{k, v})
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].Value > ss[j].Value
+	})
 	fmt.Printf("Reviewed %d pull requests in %d repositories\n\n", total, len(pulls))
 	fmt.Println(`| Count 	| Repository 	|
 |-------	|------------	|`)
-	for _, v := range keys {
-		url := fmt.Sprintf("https://github.com/%s", v)
+	for _, s := range ss {
+		url := fmt.Sprintf("https://github.com/%s", s.Key)
 		url += "/pulls?q=is%3Apr+reviewed-by%3Agaocegege+"
-		fmt.Printf("|%d\t|[%s](%s)|\n", pulls[v], v, url)
+		fmt.Printf("|%d\t|[%s](%s)|\n", s.Value, s.Key, url)
 	}
 }

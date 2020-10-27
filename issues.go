@@ -58,12 +58,26 @@ func ShowOpenedIssues(pulls map[string]int) {
 	for _, v := range keys {
 		total += pulls[v]
 	}
+
+	type kv struct {
+		Key   string
+		Value int
+	}
+
+	var ss []kv
+	for k, v := range pulls {
+		ss = append(ss, kv{k, v})
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].Value > ss[j].Value
+	})
 	fmt.Printf("Opened %d issues in %d repositories\n\n", total, len(pulls))
 	fmt.Println(`| Count 	| Repository 	|
 |-------	|------------	|`)
-	for _, v := range keys {
-		url := fmt.Sprintf("https://github.com/%s", v)
+	for _, s := range ss {
+		url := fmt.Sprintf("https://github.com/%s", s.Key)
 		url += "/issues?q=is%3Aissue+author%3Agaocegege+"
-		fmt.Printf("|%d\t|[%s](%s)|\n", pulls[v], v, url)
+		fmt.Printf("|%d\t|[%s](%s)|\n", s.Value, s.Key, url)
 	}
 }
